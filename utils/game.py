@@ -1,5 +1,4 @@
 import os 
-from collections import Counter
 import random
 
 
@@ -9,36 +8,44 @@ class Hangman():
     """
 
     def __init__(self):
+        self.loop = True
         self.lives = 5
-        self.correctly_guess = []
+        self.correctly_guess = set()
+        self.correctly_guess_word = []
         file_path = os.path.join(os.path.abspath(''), "words_list.txt")
         content_doc = open(f"{file_path}", "r", encoding='UTF-8').read()
-        self.possible_words = [word for word in content_doc.splitlines() if len(word) >= 5]
-        self.word_to_find = random.choice(self.possible_words).upper()
+        possible_words = [word for word in content_doc.splitlines() if len(word) >= 5]
+        self.word_to_find = random.choice(possible_words).upper()
     
-    def show_word(self):
-        self.hidden_word = ["_" for x in self.word_to_find]
-        # print(self.word_to_find)
-        print(" ".join(self.hidden_word))
+    def print_word(self):
+        for x in self.word_to_find:
+            if x in self.correctly_guess:
+                self.correctly_guess_word.append(x)
+            else:
+                self.correctly_guess_word.append("_")
+        print(" ".join(self.correctly_guess_word))
+        self.correctly_guess_word = []
 
     def guess(self):
-        self.letter = input("Please enter a letter or your guess:").upper()
+        self.letter = input("Please enter a letter or your guess: ").upper()
         if len(self.letter) == 1:
             if self.letter in self.word_to_find:
                 print(f"Congratulation, {self.letter} is in the word!")
-                self.correctly_guess.append(self.letter)
-                for elem in self.correctly_guess:
-                    self.hidden_word = [elem if elem == char else "_" for char in self.word_to_find]
-                print(self.hidden_word)
+                self.correctly_guess.add(self.letter)
             else:
                 self.lives -= 1
-                print(f"Sorry, {self.letter} is not in the word. You lost a live. You have now {self.lives}!")
+                print(f"Sorry, {self.letter} is not in the word! You lost a live.")
         else:
-            self.word_guess()
-    
-    def word_guess(self):
-        if self.letter == self.word_to_find:
-            print(f"Congratulation, {self.letter} was the right word!")
+            if self.letter == self.word_to_find:
+                print(f"Congratulation, {self.letter} was the right word!")
+                self.lives = 0
+            else:
+                self.lives -= 1
+                print(f"Sorry, {self.letter} is not the right word! You lost a live.")
+
+    def replay(self):
+        play_again = input("Would you like to play again ? (Y/N): ").upper()
+        if play_again == "YES" or play_again == "Y":
+            return "YES"
         else:
-            self.lives -= 1
-            print(f'Sorry, {self.letter} is not the word we are looking for. You have now {self.lives}')
+            return "NO"

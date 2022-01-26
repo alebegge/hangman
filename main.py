@@ -1,42 +1,27 @@
-from ast import Break
-import os 
-import pandas as pd 
-import numpy as np 
-from collections import Counter
-
+import time
 from utils.game import *
 
 
 print('Welcome to the Hangman Game')
 print("Ok, let's go !")
-playing = Hangman()
+general_loop = input("Are you ready to play ? (Y/N): ").upper()
 
-loop = 1
-while loop > 0:
-    playing.show_word()
+while general_loop == "Y" or general_loop == "YES":
+
+    playing = Hangman()
+    print(playing.word_to_find)
+    print(f"Our system is picking a random number for you....")
+    time.sleep(2)
+    print(f"The word to be guess is: ")
+
     while playing.lives > 0:
-        print(f'You have now {playing.lives} lives left to guess the word.')
+        playing.print_word()
+        print('')
         playing.guess()
-    
+        if playing.lives > 0:
+            print(f"You have now {playing.lives} lives left.\n")
     else:
-        print(f"We are sorry but you lost !")
-        play_again = input("Would you like to play again ? (Y/N)").upper()
-        
-        if play_again == "yes" or "y":
-            playing = Hangman()
-            loop = 1
-        else:
-            print("Thanks for playing, see you soon!")
-            loop = -1
+        general_loop = playing.replay()
 
-            
-
-
-
-
-
-
-
-
-
-
+else:
+    print("Sorry to hear that, have a nice day!")
