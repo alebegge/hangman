@@ -1,4 +1,5 @@
 import time
+
 from utils.game import *
 
 
@@ -9,7 +10,6 @@ general_loop = input("Are you ready to play ? (Y/N): ").upper()
 while general_loop == "Y" or general_loop == "YES":
 
     playing = Hangman()
-    print(playing.word_to_find)
     print(f"Our system is picking a random number for you....")
     time.sleep(2)
     print(f"The word to be guess is: ")
@@ -24,4 +24,4 @@ while general_loop == "Y" or general_loop == "YES":
         general_loop = playing.replay()
 
 else:
-    print("Sorry to hear that, have a nice day!")
+    playing.exit()
