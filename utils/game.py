@@ -29,7 +29,10 @@ class Hangman():
         self.word_to_find: str = random.choice(possible_words).upper()
 
     def print_word(self) -> None:
-        """ Print the word to find with only letters guessed. """
+        """ 
+        Short stockage memory restructuring the hidden word with the guesses
+        and printing the word to find hidden. 
+        """
         for x in self.word_to_find:
             if x in self.correctly_guess:
                 self.correctly_guess_word.append(x)
@@ -52,13 +55,14 @@ class Hangman():
                     f"Sorry, {self.letter} is not in the word! You lost a live.\n")
         else:
             if self.letter == self.word_to_find:
-                print(f"Congratulation, {self.letter} was the right word!\n")
+                print(f"Congratulation, {self.letter} was the right word!")
+                print(f"You found it after {self.turn_count} turns. \n")
                 self.lives = 0
             else:
                 self.lives -= 1
                 print(
                     f"Sorry, {self.letter} is not the right word! You lost a live.\n")
-        self.turn_count += 1 
+        self.turn_count += 1
 
     def replay(self) -> str:
         """Asking the player to play again. Return a str "YES" or "NO". """
